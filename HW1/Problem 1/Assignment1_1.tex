@@ -1,0 +1,93 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsthm,amsfonts,amssymb,epsfig,amsmath,times,amsthm}
+\usepackage{tabu} 
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newcommand\tab{\setlength\parindent{24pt}}
+
+\begin{document}
+	
+	\begin{center}
+		{\bf\Large CMPS 102 --- Fall 2018 --  Homework 1}\\
+		Alyssa Melton\\
+		I have read and agree to the collaboration policy. \\
+		Collaborators: none\\
+	\end{center}
+	
+	%------------------------------------------------------------------------------	
+	%------------------------------------------------------------------------------
+	
+	\section*{Solution to Problem 1}
+	
+To disprove that for any set of preference lists, Alice cannot end up with David
+by lying about Ben and Carl, consider the following preferences:
+\vspace{.25cm}
+
+\begin{tabu} to 0.8\textwidth { | X[c] | X[c] | X[c] | X[c] | }
+	\hline
+	Men & Preference 1 & Preference 2 & Preference 3\\
+	\hline
+	David & Cindy & Alice & Jane\\
+	\hline
+	Ben  & Alice  & Cindy & Jane  \\
+	\hline
+	Carl & Alice & Jane & Cindy\\
+	\hline
+\end{tabu}
+
+\vspace{.25cm}
+\begin{tabu} to 0.8\textwidth { | X[c] | X[c] | X[c] | X[c] | }
+	\hline
+	Women & Preference 1 & Preference 2 & Preference 3\\
+	\hline
+	Alice & David & Ben & Carl\\
+	\hline
+	Jane  & Ben  & Carl & David  \\
+	\hline
+	Cindy & Carl & Ben & David\\
+	\hline
+\end{tabu}
+
+
+	\begin{claim} 
+		Gale Shapely without lying will result in Alice being matched with someone other than David.
+	\end{claim}
+	\begin{proof}
+		Following Gale Shapely, we see the following events:\\
+		- David proposes to Cindy, Cindy accepts.\\
+		- Ben proposes to Alice, Alice accepts.\\
+		- Carl proposes to Alice, Alice declines.\\
+		- Carl proposes to Jane, Jane accepts.\\
+		- Terminate. \\
+		Couples are as follows:\\
+		David and Cindy\\
+		Ben and Alice\\
+		Carl and Jane
+	\end{proof}
+
+
+	\begin{claim} 
+		When Alice lies and says she prefers Carl over Ben, she gets paired with David.
+	\end{claim}
+	\begin{proof}
+		Following Gale Shapely with the new preference list, we see the following events:\\
+		- David proposes to Cindy, Cindy accepts.\\
+		- Ben proposes to Alice, Alice accepts.\\
+		- Carl proposes to Alice, Alice accepts.\\
+		- Ben proposes to Cindy, Cindy accepts.\\
+		- David proposes to Alice, Alice accepts.\\
+		- Carl proposes to Jane, Jane accepts\\
+		- Terminate. \\
+		Couples are as follows:\\
+		David and Alice\\
+		Ben and Cindy\\
+		Carl and Jane
+	\end{proof}
+
+
+As we can see, the results are different and Alice did indeed benefit by lying about her preferences.
+	\newpage
+	
+	
+\end{document}

@@ -1,0 +1,98 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsthm,amsfonts,amssymb,epsfig,amsmath,times,amsthm}
+\usepackage{tabu} 
+\usepackage{pgfplots}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newcommand\tab{\setlength\parindent{24pt}}
+
+\begin{document}
+	
+	\begin{center}
+		{\bf\Large CMPS 102 --- Fall 2018 --  Homework 3}\\
+		Alyssa Melton\\
+		I have read and agree to the collaboration policy. \\
+		Collaborators: none\\
+	\end{center}
+	
+	%------------------------------------------------------------------------------	
+	%------------------------------------------------------------------------------
+	
+	\section*{Solution to Problem 4}
+	Alice has a gift card with \textit{N} dollars on it and has a choice of \textit{m} cakes to buy. We want to find how many different ways she can buy the cakes so that she uses all of the money on her gift card. \\
+	\\
+	There is a counting problem like this one that is very similar that asks to count how many ways we can sum to a given number using positive integers. In this case, we check every possible combination of numbers until the sum exceeds $n$. Using that as a basis I constructed the following algorithm which involves some definitions a subroutine:\\
+	\\
+ 	\textbf{thisCombo} = 
+ 	a subset of the indices of the set of cake prices, where the sum of the values of denominations at the indices found in this array will or will not equal the total $n$.
+ 	\\
+ 	\textbf{sum(thisCombo)} = 
+ 	helper function that adds all values of denominations at the indices found in this array. Example: if thisCombo = [1, 2], the sum returned is denominations[1] + denominations[2]
+ 	\\
+ 	\textbf{comboIndex} = the index of thisCombo, so we can track the next empty spot and previously added spot.
+ 	\\
+ 	\textbf{denominations} =
+ 	set of cake prices, or denominations we can use to add to the given total $n$.
+ 	\\
+ 	\textbf{\textit{n}} = gift card amount.
+ 	\\
+ 	\textbf{\textit{total}} =
+ 	count of how many total ways there are to buy the cakes which is updated throughout getWays.
+ 	\\
+ 	\\
+ 	\textit{getWays}(thisCombo, comboIndex, denominations, $n$)\\
+ 	\indent	if $(sum(thisCombo) > n)$\\
+ 	\indent \indent (thisCombo exceeds $n$)\\
+ 	\indent \indent break loop\\
+	\\ 			
+ 	\indent	if $sum(thisCombo) == n$\\
+ 	\indent	\indent	(thisCombo is exactly n, so it is a valid combination)\\
+ 	\indent	\indent	total++\\
+ 	\indent	\indent	break loop\\
+ 	\\
+ 	\indent	(else $sum(thisCombo < n)$, so want to try to add more to it:)\\
+ 	\\
+ 	\indent	if comboIndex = 0 (haven't added anything to thisCombo yet, start at beginning of combo array)\\
+ 	\indent	\indent	prev = 0\\
+ 	\indent	else (we want to know what the denominations index of the last number added was) \\
+ 	\indent	\indent	previous = thisCombo[comboIndex-1]\\
+ 	\\		
+ 	\indent	(basically want to check all possible combinations:)\\
+ 	\indent	for $(i = previous; denominations[i] \leq n; i++)$\\
+	\indent	\indent	thisCombo[comboIndex] = i\\
+	\indent	\indent	getWays(thisCombo, comboIndex+1, denominations, n)\\
+ 	\\
+	
+	
+	\begin{claim} 
+		This algorithm is running time $O(mn)$.
+	\end{claim}
+	
+	\begin{proof}
+		Assumption: only cakes less than or equal to $n$ will be included in $m$.\\ 
+		At the first call of getWays, we get a loop that will go through all the denominations which is $m$. Now, we will calculate how many calls to getWays each subcall will do. Because each call to getWays we are adding a cake price to our combination, at the worst case we can only add up to $n$ cakes, in which they are all at price $1$. Thus, the runtime is $O(mn)$ where we are calling in a loop that goes through $m$ times, and getWays is recursively called at most $n$ times within each iteration of that loop. 
+	\end{proof}
+	
+	\begin{claim} 
+		This algorithm works.
+	\end{claim}
+	
+	\begin{proof}
+		This algorithm is necessarily checking all possible combinations, and incriments \textit{total} when a valid combination is found. To say this algorithm doesn't work is to say that it is not checking all possible combinations, so that is what we will prove. 
+		
+		Assume that not all combinations were checked, and a valid combination was not accounted for. In getWays, we loop through all denominations from the previous, until greater than $n$. Then, there must be a denomination outside of the bounds previous to greater than $n$. Well, if a denomination is greater than $n$, we cannot buy that cake because we don't have enough money on the gift card, so this must not give a valid combination. The combination was be found in an element less than the previous. But, if the number is less than the previous, it is already accounted for and we would have already created this combination. Thus we have a contradiction as all numbers were accounted for. 
+	\end{proof}
+	
+	\begin{claim} 
+		This algorithm is space complexity O(n)
+	\end{claim}
+	
+	\begin{proof}
+		The algorithm has an array that holds combination, which will be $O(n)$ in the worst case (a denomination = 1). We also have a few single variables. 
+	\end{proof}
+	
+	\newpage
+	
+	
+\end{document}

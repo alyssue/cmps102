@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsthm,amsfonts,amssymb,epsfig,amsmath,times,amsthm}
+\usepackage{tabu} 
+\usepackage{pgfplots}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newcommand\tab{\setlength\parindent{24pt}}
+
+\begin{document}
+	
+	\begin{center}
+		{\bf\Large CMPS 102 --- Fall 2018 --  Homework 3}\\
+		Alyssa Melton\\
+		I have read and agree to the collaboration policy. \\
+		Collaborators: none\\
+	\end{center}
+	
+	%------------------------------------------------------------------------------	
+	%------------------------------------------------------------------------------
+	
+	\section*{Solution to Problem 2}
+		David’s vehicle has a size limit S\\
+		Each chair \textit{i} has a size $s_i$.  
+		The company has one important rule: 
+		that the chairs must be sent to the store in the order that they are built in the studio. 
+		The  company  is  using  a  greedy  algorithm  for  doing  this  transfer:  
+		They  load  David’s truck with chairs in the order they are built, and whenever the next chair does not fit, he drives to the store and comes back to bring the rest of them to the store.
+		 
+		David is paid by the lap.  
+		To decrease the delivery cost, his manager wonders if they could use fewer laps 
+		between the two locations by sometimes sending David on his way while his vehicle isless full, 
+		so that the next time he comes back it can be better packed, 
+		which means they delay some chairs to the next drive to make the next drive to be more efficient.
+		Given a sequence of chairs with size $s_1, s_2, ···, s_n$, prove that the simple greedy algorithm is infact better than the ”delay” algorithm.
+	
+	\begin{claim} 
+		
+		
+	\end{claim}
+
+	\begin{proof}
+		Assume greedy is not optimal, and there is some algorithm \textit{O} that is.\\
+		Let $S \geq c_0 + c_1 +  . . . + c_p = G$ denote set of chairs chosen to be put into the truck in each trip chosen by greedy.\\
+		Let $S \geq d_0 + d_1 +  . . . + d_q = H$ denote set of chairs chosen to be put into the truck in each trip chosen in the optimal solution \textit{O} with $c_0 = d_0, c_1= d_1 , . . . , c_r= d_r$ for largest possible value of $r$.\\
+		Note: $G > H$ by greedy choice of algorithm. \\
+		\\
+		However in the next trip taken by $O$ after $H$ must take the chairs not taken by in $G$ by Greedy. Call the difference between $G$ and $H$, $K$ Because $G > H$, we know $K$ is a positive real number. In optimal, the trip after the first that differs from Greedy now has $S-K$ space in comparison to Greedy, who has $S$ amounts of space to fit chairs. Thus, if \textit{O} is optimal, there is no reason Greedy is not optimal as well, as it is doing better or equal to \textit{O}.
+		
+		
+	\end{proof}
+
+	\newpage
+	
+	
+\end{document}

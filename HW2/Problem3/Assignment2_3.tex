@@ -1,0 +1,63 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsthm,amsfonts,amssymb,epsfig,amsmath,times,amsthm}
+\usepackage{tabu} 
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newcommand\tab{\setlength\parindent{24pt}}
+
+\begin{document}
+	
+	\begin{center}
+		{\bf\Large CMPS 102 --- Fall 2018 --  Homework 2}\\
+		Alyssa Melton\\
+		I have read and agree to the collaboration policy. \\
+		Collaborators: none\\
+	\end{center}
+	
+	%------------------------------------------------------------------------------	
+	%------------------------------------------------------------------------------
+	
+	\section*{Solution to Problem 3}
+	We suppose that we have a group of $m$ friends who are giving us advice on whether or not to invest in the stock market. We know that exactly $one$ of these friends is $always$ right on whether or not to invest that day. Now, without the knowledge of the all-knowing friend, it is smart to always go with the majority's opinion. So each day, we will just the majority's opinion, and decide whether or not to invest depending on what the majority of your friends say. \\
+	Now, when the day is over, if you were wrong, (0), then you know \textit{at least one half of your friends were also wrong}, since you went with the majority. Now, elliminate those friends, and don't consider their opinion from then on. Each time you are wrong, you elliminate at least one half of your friends, until you're left with only one friend left, who is the one that is always correct. More formally: \\
+	\\
+	$m =$ number of friends \\
+	\\
+	stockmarket(m)\\
+	\indent	if $m = 1 \rightarrow$ return friend[m]\\
+	\indent	else if $\frac{m}{2}$ or more friends tell you to invest \\
+	\indent	\indent	$\rightarrow$ YourAction = invest\\
+	\indent	else if $\frac{m}{2}$ or more friends tell you not to invest \\
+	\indent	\indent	$\rightarrow$ YourAction = don't invest\\
+	\\
+	\indent	day's result = (YourAction == CorrectAction)\\
+	\indent	if day's result = 1 *you were correct! :)\\
+	\indent	\indent	$\rightarrow$ stockmarket (total friends that were correct)
+	*note: this will always be $\frac{m}{2}$ or more.\\
+	\indent	else if day's result = 0 *your were wrong :(\\
+	\indent	\indent	$\rightarrow$ stockmarket (total friends that were correct) 
+	*note: this will always be $\frac{m}{2}$ or less.\\
+	
+	\begin{claim} 
+		This strategy will find the all-knowing friend while obtaining at most $O(log$ $m)$ zeros.
+	\end{claim}
+	
+	\begin{proof}
+		Because days that you are correct do no count towards the time complexity, consider this algorithm in the worst case, such that you are $always$ wrong, but the least number of friends tell you to do the wrong action.\\
+		\\
+		If you were wrong, then by definition, $\frac{m}{2}$ or more friends tell you to do that wrong action, but we are considering the case that the least number of friends tell you to do that wrong action that still leads to you doing it, so each day, it will be precisely $\frac{m}{2}$ friends that mislead you. \\
+		\\
+		Because you are eliminating all the friends that were wrong, you will then eliminate those $\frac{m}{2}$ friends. The number of friends you are considering in each day after being wrong the day before is at most half the number you had the day before, until you get down to the last two friends, in which the one who is correct is the all-knowing friend.\\
+		\\
+		We get the following recurrence relation:\\
+		$T(m) = T(\frac{m}{2}) + 1$ until $m = 1$.\\
+		$\implies T(\frac{m}{2^k}) + k$\\
+		$\implies 1 = \frac{m}{2^k}$\\
+		$\implies 2^k = m$
+		$\implies k = log_2 m$. 
+		$\implies O(log$ $m)$
+		
+	\end{proof}
+	\newpage	
+\end{document}

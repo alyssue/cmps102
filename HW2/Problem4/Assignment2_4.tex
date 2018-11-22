@@ -1,0 +1,62 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsthm,amsfonts,amssymb,epsfig,amsmath,times,amsthm}
+\usepackage{tabu} 
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newcommand\tab{\setlength\parindent{24pt}}
+
+\begin{document}
+	
+	\begin{center}
+		{\bf\Large CMPS 102 --- Fall 2018 --  Homework 2}\\
+		Alyssa Melton\\
+		I have read and agree to the collaboration policy. \\
+		Collaborators: none\\
+	\end{center}
+	
+	%------------------------------------------------------------------------------	
+	%------------------------------------------------------------------------------
+	
+	\section*{Solution to Problem 4}
+	Key fact: \\
+	The cost of joining two ropes, equals the sum of the lengths of the two ropes. $C=l_i+l_j$.\\
+	\\
+	It is useful to think of the most efficient way to elliminate a rope while incurring the least cost. By adding the smallest ropes, we add the smallest cost that we possibly can, while decreasing the total number of ropes.\\
+	Consider the following algorithm:\\
+	\\
+	sort all ropes by length from smallest to greatest.\\
+	initialize the cost to be zero. C = 0.\\
+	\\
+	tieropes(List, Cost)\\
+	\indent if length of List = 1, return Cost.\\
+	\indent else tie together the smallest two ropes, forming a single rope.\\
+	\indent $Cost = Cost + (lengthrope_1 + lengthrope_2)$\\
+	\indent move the new rope of length $(lengthrope_1 + lengthrope_2)$ into it's appropriate spot in the sorted list.\\
+	\indent tieropes(List, Cost)\\
+
+	\begin{claim} 
+		The above algorithm is optimal.
+	\end{claim}
+
+	\begin{proof}
+		If the above algorithm, call it, \textit{Greedy}, is not optimal,
+		then there must be some other algorithm, call it \textit{O}, that is optimal. 
+		Say that \textit{O} is the same as \textit{Greedy} up until $tie_{k+1}$, and $tie_k$ was the last tie that was the same as the \textit{Greedy}. Then, this tie must have tied two ropes that were not both the smallest ropes in the list, otherwise it would be the same as \textit{greedy}. Call the two smallest ropes $r_1$ and $r_2$. Any other ropes, $r_i$ or $r_j$ where $i, j \in \{1, 2, ... n\}$, is longer than $r_1$ and $r_2$. Then it must be that $r_i + r_j > r_1 + r_2$. Because the cost of adding $r_i$ and $r_j$ is greater than or equal to $r_1 + r_2$, \textit{Greedy} takes no harm in adding $r_1$ and $r_2$ instead. Thus, the \textit{Cost} of \textit{Greedy} must be at most the \textit{Cost} of \textit{O}, thus \textit{Greedy} must be, if not also, optimal. 
+	\end{proof}
+
+	\begin{claim} 
+	The above algorithm is $O(nlog$ $n)$. 
+\end{claim}
+
+\begin{proof}
+	The algorithm takes $O(nlog$ $n)$ to sort the list (or build the min-heap).
+	It then extracts the top two smallest ropes in $O(log$ $n)$ time, and does this $n$ times, so we get $2*n*logn$.
+	It then inserts the new rope back in in O(logn) time and does this $n$ times.
+	We ultimately get $nlog$ $n + 2nlog$ $n + nlog$ $n $ which evaluates to $O(nlog$ $n)$
+\end{proof}
+
+	\newpage
+	
+	
+\end{document}

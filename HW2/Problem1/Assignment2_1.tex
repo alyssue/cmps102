@@ -1,0 +1,160 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsthm,amsfonts,amssymb,epsfig,amsmath,times,amsthm,mathtools}
+\usepackage{tabu} 
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newcommand\tab{\setlength\parindent{24pt}}
+
+\begin{document}
+	
+	\begin{center}
+		{\bf\Large CMPS 102 --- Fall 2018 --  Homework 2}\\
+		Alyssa Melton\\
+		I have read and agree to the collaboration policy. \\
+		Collaborators: none\\
+	\end{center}
+	
+	%------------------------------------------------------------------------------	
+	%------------------------------------------------------------------------------
+	
+	\section*{Solution to Problem 1}
+		Consider a vector $v \in \mathbb{R}^{2^n}$, i.e., a vector with $m= 2^n$ entries with real numbers.
+		Design an  algorithm to compute $H_n * v$ in  time $O(mlog$ $m)$.   Prove  the  runtime  bound  for  your algorithm.\\
+		\\
+		I am honestly pretty stumped and can only think to probably find some pattern within the Hadamard Matrix so that you can copy the product of the entries in specific columns to correlating rows all at once, but I don't have the mental capacity right now so I'm gonna take the $L$. :( \\
+		\\
+		I \textit{CAN} however tell you how to multiply a vector to a matrix in $O(n^2)$ but that is not what the question is asking for and is quite obvious. I will state it simply, though, that you can invert the vector so that it is a row, and then find the dot product of the inverted vector and each row. This value will be that of each element in the resulting vector. *vector dotted w/ row 1 = value for first entry of new vector*
+		
+		
+		
+	\begin{claim} 
+		Using the fact that $H_n[i, j] = \frac{1}{\sqrt{2^n}}(−1)^{i \circ j}$, it can be shown that\\
+		$H_n = \frac{1}{\sqrt{2}}\begin{bmatrix}
+			H_{n-1} & H_{n-1} \\
+			H_{n-1} & -H_{n-1} \\
+		\end{bmatrix}
+		$
+	\end{claim}
+	
+	\begin{proof}
+
+		Given $H_n[i, j] = \frac{1}{\sqrt{2^n}}(-1)^{i \circ j}$, we can derive the following proof by induction.\\
+		\\
+		\textbf{Base Cases:}\\
+		When $n=0: \\
+		H_0 [0,0] = \frac{1}{\sqrt{2^0}} (-1)^{0} \implies 
+		\frac{1}{1} \begin{bmatrix}
+		1 \\
+		\end{bmatrix}$\\
+		\\
+		When $n=1:\\
+		H_1 [0,0] = \frac{1}{\sqrt{2^1}} (-1)^{0}  \\
+		H_1 [1,0] = \frac{1}{\sqrt{2^1}} (-1)^{0}  \\
+		H_1 [0,1] = \frac{1}{\sqrt{2^1}} (-1)^{0}  \\
+		H_1 [1,1] = \frac{1}{\sqrt{2^1}} (-1)^{1} \implies 
+		\frac{1}{\sqrt{2}} \begin{bmatrix}
+			1 & 1\\
+			1 & -1\\
+		\end{bmatrix}$\\
+		\\
+		Which indeed holds the recurrence relation above, such that 
+		$H_1 = \frac{1}{\sqrt{2}}\begin{bmatrix}
+			H_{0} & H_{0} \\
+			H_{0} & -H_{0} \\
+		\end{bmatrix}
+		$
+		\\
+		\\
+		\textbf{Inductive Hypothesis}:\\
+		Assume for some $k \geq 1$ that $H_k = \frac{1}{\sqrt{2}}\begin{bmatrix}
+		H_{k-1} & H_{k-1} \\
+		H_{k-1} & -H_{k-1} \\
+		\end{bmatrix}
+		$ where the entries of $H_k$ are defined to be $H_k[i, j] = \frac{1}{\sqrt{2^k}}(-1)^{i \circ j}$.\\
+		\\
+		\newpage
+		\noindent
+		\textbf{Inductive Step:}\\
+		We want to show that $H_{k+1} = \frac{1}{\sqrt{2}}\begin{bmatrix}
+		H_{k} & H_{k} \\
+		H_{k} & -H_{k} \\
+		\end{bmatrix}
+		$\\
+		\\
+		Starting with the fact that the entries of $H_{k+1}$ are defined to be 
+		$H_{k+1}[i, j] = \frac{1}{\sqrt{2^{k+1}}}(-1)^{i \circ j}$, \\
+		we can rewrite this as $H_{k+1}[i, j] = \frac{1}{\sqrt{2}} \cdot \frac{1}{\sqrt{2^{k}}}(-1)^{i \circ j}$.\\
+		But now, we can substitute from our inductive hypothesis:\\
+		$H_{k+1}[i, j] = \frac{1}{\sqrt{2}} \cdot H_k[i, j]$ and because we assume for $k$ that the recurrence realtion holds, we may write this as 
+		$H_{k+1} = \frac{1}{\sqrt{2}} \begin{bmatrix}
+		H_{k} & H_{k} \\
+		H_{k} & -H_{k} \\
+		\end{bmatrix}$\\
+		\\
+		I am very unhappy with the above proof and it's 11:44pm before the due date so I can't really come up with a concise proof but I have found that when analyzing the digits of the binary representation of $i$ and $j$, I noticed that when the digits of the row and column are of the same length, we get the negative of the Hadamard matrix that came before it. for example, when n=3 and in columns (4-7) and rows 4-7. where the binary representation has three digits, all of the values in this quadrant of the matrix are negative that of the $H_2$. This is true when n=2 as well, for entries in rows and columns 2 and 3. Given time, I might try to induct on this fact.\\
+		Induction on this problem was very difficult because I didn't know how to construct a matrix 4x the size of the previous one. 
+	\end{proof}
+	
+	
+	\begin{claim} 
+		The Euclidean norm of every column and every row is 1.
+	\end{claim}
+	
+	\begin{proof}
+		By definition, the Euclidean norm of a vector $\mid \mid \vec{x} \mid \mid = \sqrt{x_1^2 + ... + x_n^2}$.\\
+		Because every entry of a Hadamard Matrix is either $1$ or $-1$, and for any row or column, every entry will be squared when taking the norm, the result will be the square root of the sum of $2^n$ 1's. Thus, we will get $\sqrt{2^n}$ scaled by $\frac{1}{\sqrt{2^n}}$. It is simple to see that $\frac{1}{\sqrt{2^n}} \cdot \sqrt{2^n} = 1$
+		 
+	\end{proof}
+	
+	\begin{claim} 
+		The columns of $H_n$ form an orthonormal basis, i.e., the dot-product of any two columns of $H_n$ equals to zero, and every column of $H_n$ has Euclidean norm of one. 
+	\end{claim}
+
+	\begin{proof}
+		 It suffices to say that by Claim 2 above, every column of $H_n$ has Euclidean norm of one.
+		 To show that the dot-product of any two columns of $H_n$ equals to zero, consider the following algebraic manipulation on the dot product of two vectors:\\
+		 $
+		 \begin{bmatrix}
+				 a \\
+				 b \\
+				 c \\
+				 d \\
+		 \end{bmatrix} \cdot \begin{bmatrix}
+				 e \\
+				 f \\
+				 g \\
+				 h \\
+		 \end{bmatrix} = (ae + bf + cg + dh) = (ae + bf) + (cg + dh) = \begin{bmatrix}
+				 a \\
+				 b \\
+		 \end{bmatrix} \cdot \begin{bmatrix}
+				 e \\
+				 f \\
+		 \end{bmatrix} + \begin{bmatrix}
+				c \\
+				d \\
+		\end{bmatrix} \cdot \begin{bmatrix}
+				g \\
+				h \\
+		\end{bmatrix} 
+		$\\
+		As we can see, it is algebraically correct to split a vector into two separate vectors, and add their dot products. Using this, we can show the following:\\
+		\\ 
+		Let us prove for n = 1 that the dot product of any two columns is equal to zero. 
+		When $n=1$, we get the matrix 
+		$H_1 = \frac{1}{\sqrt{2}}\begin{bmatrix}
+		1 & 1 \\
+		1 & -1 \\
+		\end{bmatrix}
+		$ and the dot product is $(1-1) = 0$. Assume for some $k \geq 1$ that the dot product of any two columns in $H_k$ is 0. \\
+		Now, using the recurrence $H_n = \frac{1}{\sqrt{2}}\begin{bmatrix}
+		H_{n-1} & H_{n-1} \\
+		H_{n-1} & -H_{n-1} \\
+		\end{bmatrix} $ and the algebraic fact above, the dot product of any two columns will be the sum of the dot product of two columns from previous matrix; $H_{n-1}$. Because we proved for $k$ that the dot product of any two columns is zero, the sum will also be zero.
+	\end{proof}
+
+
+	\newpage
+	
+\end{document}
