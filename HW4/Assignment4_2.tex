@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsthm,amsfonts,amssymb,epsfig,amsmath,times,amsthm}
+\usepackage{tabu}
+\usepackage{pgfplots}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newcommand\tab{\setlength\parindent{24pt}}
+
+\begin{document}
+
+	\begin{center}
+		{\bf\Large CMPS 102 --- Fall 2018 --  Homework 4}\\
+		Alyssa Melton\\
+		I have read and agree to the collaboration policy. \\
+		Collaborators: none\\
+	\end{center}
+
+	%------------------------------------------------------------------------------
+	%------------------------------------------------------------------------------
+
+	\section*{Solution to Problem 2}
+
+		Say we are given two sequences, $A$ and $B$, with $A$ have $m$ edges and $B$ having $n$ edges.\\
+		For simplicity, let's say $A$ is of the same length, or longer than $B$. \\
+		We will store the elements of $A$ and $B$ in arrays the size of the longest sequence, $m$. \\
+		If one array is smaller than $m$, fill the end values with $null$.\\
+		\\
+		For two sequences $s$ and $t$, we say $t$ is a subsequence of $s$
+		if all elements in $t$ are in $s$ and these elements appear in $t$
+		in the same order the do in $s$. \\
+		We want to find a subsequence that is shared by $A$ and $B$, and is of maximal length.\\
+		\\
+		To do this, we will keep an array called $subsequence$ of size $n$ (the smaller of the two sequences).\\
+		Keep another array called $tempsequence$ of size $n$. This will be used for comparison.\\
+		\\
+		for i (0 to m-1): \{\\
+		\indent for j (0 to n-1): \{\\
+		\indent \indent $index = (i + j) \% m$. // i is the place in B that the original B starts.\\
+		\indent \indent if $index = 0$: \{ // cannot have subsequences out of order.\\
+		\indent \indent \indent if (\# non-null elements in $tempsequence) >$ (\# non-null elements in $subsequence$): \{\\
+		\indent \indent \indent \indent $subsequence = tempsequence$.\\
+		\indent \indent \indent \}	\\
+		\indent \indent \indent reset all elements of $tempsequence$ back to $null$.\\
+		\indent \indent \}\\
+		\indent \indent if $A[index] = B[index]$: add this element to the back of $tempsequence$.\\
+		\indent \}\\
+		\indent if (\# non-null elements in $tempsequence) >$ (\# non-null elements in $subsequence$): \{ \\
+		\indent \indent $subsequence = tempsequence$.\\
+		\indent \}	\\
+		\indent reset all elements of $tempsequence$ back to $null$.\\
+		\indent Rotate all elements of $B$ to the right by 1.\\
+		\indent The element the falls off the end becomes the $B[0]$.\\
+		\}\\
+		return $subsequence$.\\
+		\\
+		\newpage
+		$A$ and $B$ in each iteration of the while loop will look like this:\\
+
+		\begin{tabu} to 0.8\textwidth
+		{ | X[l] | X[c] | X[c] | X[c] | X[c] |X[c] | X[c] | X[c] | X[c] | X[c] | X[c] |X[c] | X[c] | }
+		 \hline
+		 A: & A & A & T & A & G & T & T & G & G & T & A & G \\
+		 \hline
+		 B: & A & A & T & A & G & T & T & G & G & null & null & null \\
+		 \hline
+		 B: & null & A & A & T & A & G & T & T & G & G & null & null  \\
+	   \hline
+		 B: & null & null & A & A & T & A & G & T & T & G & G & null  \\
+		 \hline
+		 B: & null & null & null & A & A & T & A & G & T & T & G & G  \\
+		 \hline
+		 B: & G & null & null & null & A & A & T & A & G & T & T & G \\
+		 \hline
+		 B: & G & G & null & null & null & A & A & T & A & G & T & T\\
+		 \hline
+		 \end{tabu}\\
+		 \\
+		 We are checking vertically for matches, and the most number of matches give
+		 the longest substring.
+
+	\begin{claim}
+		This algorithm correctly outputs the maximal substring.
+	\end{claim}
+
+	\begin{proof}
+		Assume the algorithm did not output the maximal substring. Then there must be some substring $s$ that was not considered. This however could not be, since the algorithm literally checks every possible shift while keeping the elements in order. It could output a substring longer than one that is valid. The only time that could happen is when shifting and wrapping back to the beginning. However, this can not happen either, because the outer loop keeps track of where to start in the newly shifted array so that we start at the beginning of the shorter sequence. When wrapping to the beginning, there is a check for when index=0, as to reset the subsequence array.
+	\end{proof}
+
+	\begin{claim}
+		The run time is $O(mn)$ and the space-complexity is $O(m)$
+	\end{claim}
+
+	\begin{proof}
+		The outer loop runs through 0 to $m$, and the inner loop runs 0 to $n$, hence, $O(mn)$.
+	\end{proof}
+
+	\newpage
+
+
+\end{document}

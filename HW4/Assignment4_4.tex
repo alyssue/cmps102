@@ -1,0 +1,56 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,amsthm,amsfonts,amssymb,epsfig,amsmath,times,amsthm}
+\usepackage{tabu}
+\usepackage{pgfplots}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{claim}[theorem]{Claim}
+\newcommand\tab{\setlength\parindent{24pt}}
+
+\begin{document}
+
+	\begin{center}
+		{\bf\Large CMPS 102 --- Fall 2018 --  Homework 4}\\
+		Alyssa Melton\\
+		I have read and agree to the collaboration policy. \\
+		Collaborators: none\\
+	\end{center}
+
+	%------------------------------------------------------------------------------
+	%------------------------------------------------------------------------------
+
+	\section*{Solution to Problem 4}
+		Given a graph G and it's maximum flow $f$, when decreasing an edge $e^*$ by one, creating the new graph, H, we can find the new maximum flow $f^*$ by the following:\\
+		\\
+		If the capacity of $e^*$ is greater than the maximum flow $f$, then the edge is not fully saturated anyways, so it doesn't affect the flow and we may return $f$ as $f^*$.\\
+		\\
+		Otherwise, we need to make sure that the edge $e^*$ isn't a key edge when pushing maximum flow through the graph. We can do this by considering any path in $H$ that goes through $e^*$, and decreasing the forward capacity of the edges in that path by 1 and running a backward edge of value 1 through all the edges of the path as well. \\
+		\\
+		Then, we see if there is an augmenting path in the graph.
+		If there is, then we know that the edge $e^*$ being decreased does not affect the total flow, and we can return $f$.
+		If there is not, then we know that decreasing this edge interrupted flow within the graph, and we can return $f-1$.
+
+	\begin{claim}
+		This algorithm is $O(m+n)$ time.
+	\end{claim}
+
+	\begin{proof}
+		To find a path from the source to t through the edge $e^*$, we can run BFS from $s$ to the first node in $e^*$ and from the second node in $e^*$ to $t$. BFS runs in $O(m+n)$. Finding an augmenting path is also done in $O(m+n)$, by BFS.
+	\end{proof}
+
+	\begin{claim}
+	Proof of Correctness
+\end{claim}
+
+\begin{proof}
+	If the capacity of $e^*$ is greater than $f$, we can push all of $f$ through $e^*$ and there would still be room left. This is trivial.
+
+	When $e^*$ is less than or equal to $f$, and $e^*$ does not constrict the flow, decreasing all edges from $s$ through $e^*$ to $t$ creates augmented edges, because the flow routes elsewhere than through $e^*$.
+
+	When $e^*$ is less than or equal to $f$, and $e^*$ does constrict the flow, decreasing all edges from $s$ through $e^*$ to $t$ does not create augmented edges, because the only direction the one unit of flow could have gone would be through $e^*$. 
+\end{proof}
+
+	\newpage
+
+
+\end{document}
